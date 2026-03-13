@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+
+    <!-- CSS link -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- LOGIN BOX (Shake Animation on Error) -->
+    <div class="login-container {% if error %}shake{% endif %}">
+
+        <!-- Logo -->
+        <img src="{{ url_for('static', filename='face_logo.png') }}" class="login-logo">
+
+        <h2>Admin Login</h2>
+
+        <form action="/check" method="POST">
+
+            <!-- Hidden Username (for backend) -->
+            <input type="hidden" name="username" value="admin">
+
+            <!-- Username -->
+            <div class="input-group">
+                <i class="fa fa-user"></i>
+                <input type="text" value="admin" readonly>
+            </div>
+
+            <!-- Password -->
+            <div class="input-group">
+                <i class="fa fa-lock"></i>
+
+                <!-- Show / Hide Eye Icon -->
+                <i class="fa fa-eye" id="togglePass"
+                   style="right: 12px; top: 12px; cursor:pointer; position:absolute; color:#063a7a;"></i>
+
+                <input type="password" id="password" name="password" placeholder="Enter Password" required>
+            </div>
+
+            <button class="btn-login" type="submit">LOGIN</button>
+
+        </form>
+
+        {% if error %}
+            <p class="error">Invalid Password!</p>
+        {% endif %}
+
+    </div>
+
+    <!-- Show/Hide Password Script -->
+    <script>
+        const pass = document.getElementById("password");
+        const toggle = document.getElementById("togglePass");
+
+        toggle.addEventListener("click", () => {
+            if (pass.type === "password") {
+                pass.type = "text";
+                toggle.classList.remove("fa-eye");
+                toggle.classList.add("fa-eye-slash");
+            } else {
+                pass.type = "password";
+                toggle.classList.remove("fa-eye-slash");
+                toggle.classList.add("fa-eye");
+            }
+        });
+    </script>
+
+</body>
+</html> 
