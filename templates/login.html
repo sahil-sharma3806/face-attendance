@@ -1,6 +1,16 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Login</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"><link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><style>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
 
 body{
 height:100vh;
@@ -9,41 +19,58 @@ justify-content:center;
 align-items:center;
 background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 margin:0;
+font-family:Arial, Helvetica, sans-serif;
 }
 
 /* LOGIN BOX */
 
 .login-container{
 background:#121212;
-padding:40px;
-border-radius:12px;
-width:360px;
+padding:45px 40px;
+border-radius:14px;
+width:380px;
 text-align:center;
 box-shadow:0 0 25px rgba(0,0,0,0.6);
 color:white;
+animation:fadeIn 0.7s ease;
 }
 
-.login-logo{
-width:80px;
-margin-bottom:10px;
+/* ANIMATION */
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(20px);
 }
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* TITLE */
 
 h2{
-margin-bottom:20px;
+margin-bottom:30px;
+letter-spacing:2px;
+font-size:26px;
+font-weight:700;
 }
 
 /* INPUT GROUP */
 
 .input-group{
 position:relative;
-margin-bottom:18px;
+margin-bottom:20px;
+width:100%;
 }
 
 .input-group i.fa-user,
 .input-group i.fa-lock{
 position:absolute;
-left:12px;
-top:12px;
+left:10px;
+top:50%;
+transform:translateY(-50%);
 color:#bbb;
 }
 
@@ -51,21 +78,21 @@ color:#bbb;
 
 .input-group input{
 width:100%;
-padding:12px 12px 12px 38px;
-border-radius:6px;
+padding:13px 15px 13px 40px;
+border-radius:8px;
 border:1px solid #444;
-font-size:14px;
+font-size:15px;
 box-sizing:border-box;
 background:#1e1e1e;
 color:white;
 }
 
-/* SHOW PASSWORD */
+/* SHOW PASSWORD CHECKBOX */
 
 .show-pass{
 text-align:left;
 font-size:14px;
-margin-bottom:18px;
+margin-bottom:22px;
 color:#ddd;
 }
 
@@ -73,17 +100,19 @@ color:#ddd;
 
 .btn-login{
 width:100%;
-padding:12px;
+padding:13px;
 border:none;
-background:#007bff;
+background:linear-gradient(90deg,#007bff,#00c6ff);
 color:white;
-border-radius:6px;
+border-radius:8px;
 font-size:16px;
 cursor:pointer;
+transition:0.3s;
 }
 
 .btn-login:hover{
-background:#0056b3;
+transform:scale(1.03);
+box-shadow:0 0 12px rgba(0,123,255,0.7);
 }
 
 .error{
@@ -91,32 +120,59 @@ color:#ff4d4d;
 margin-top:10px;
 }
 
-</style></head><body><div class="login-container {% if error %}shake{% endif %}"><img src="{{ url_for('static', filename='face_logo.png') }}" class="login-logo"><h2>Admin Login</h2><form action="/check" method="POST" autocomplete="off"><input type="hidden" name="username" value="admin"><div class="input-group"><i class="fa fa-user"></i>
+</style>
 
-<input type="text" value="admin" readonly autocomplete="off"></div><div class="input-group"><i class="fa fa-lock"></i>
+</head>
+
+<body>
+
+<div class="login-container {% if error %}shake{% endif %}">
+
+<h2>ADMIN LOGIN</h2>
+
+<form action="/check" method="POST" autocomplete="off">
+
+<input type="hidden" name="username" value="admin">
+
+<div class="input-group">
+<i class="fa fa-user"></i>
+<input type="text" value="admin" readonly>
+</div>
+
+<div class="input-group">
+<i class="fa fa-lock"></i>
 
 <input type="password"
 id="password"
 name="password"
 placeholder="Enter Password"
-autocomplete="new-password"
-required>
+autocomplete="new-password">
 
-</div><div class="show-pass"><label>
+</div>
+
+<div class="show-pass">
+<label>
 <input type="checkbox" onclick="togglePassword()"> Show Password
-</label></div><button class="btn-login" type="submit">LOGIN</button>
+</label>
+</div>
 
-</form>{% if error %}
+<button class="btn-login" type="submit">LOGIN</button>
 
-<p class="error">Invalid Password!</p>{% endif %}
+</form>
 
-</div><script>
+{% if error %}
+<p class="error">Invalid Password!</p>
+{% endif %}
+
+</div>
+
+<script>
 
 function togglePassword(){
 
-var pass=document.getElementById("password");
+const pass = document.getElementById("password");
 
-if(pass.type==="password"){
+if(pass.type === "password"){
 pass.type="text";
 }
 else{
@@ -125,4 +181,7 @@ pass.type="password";
 
 }
 
-</script></body></html>
+</script>
+
+</body>
+</html>

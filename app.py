@@ -63,8 +63,8 @@ def init_db():
     conn.commit()
     conn.close()
 
-
 init_db()
+
 
 # ---------------- LOGIN PAGE ----------------
 @app.route('/')
@@ -172,61 +172,6 @@ def capture_images():
     return redirect("/dashboard")
 
 
-# ---------------- CAPTURE ----------------
-@app.route('/capture', methods=['POST'])
-@lock_required
-def capture():
-
-    if 'user' not in session:
-        return redirect('/')
-
-    name = request.form['name']
-    roll = request.form['roll']
-
-    conn = sqlite3.connect('attendance.db')
-    cursor = conn.cursor()
-
-    cursor.execute("INSERT INTO students (name, roll) VALUES (?, ?)", (name, roll))
-
-    conn.commit()
-    conn.close()
-
-    folder_path = f"static/dataset/{name}"
-
-    os.makedirs(folder_path, exist_ok=True)
-
-    cam = cv2.VideoCapture(0)
-
-    count = 0
-
-    while True:
-
-        ret, frame = cam.read()
-
-        if not ret:
-            break
-
-        cv2.imshow("Capturing Images", frame)
-
-        cv2.imwrite(f"{folder_path}/{count}.jpg", frame)
-
-        count += 1
-
-        if cv2.waitKey(50) & 0xFF == ord('q'):
-            break
-
-        if count >= 25:
-            break
-
-    cam.release()
-
-    cv2.destroyAllWindows()
-
-    os.system('python train.py')
-
-    return redirect('/dashboard')
-
-
 # ---------------- REMOVE STUDENT ----------------
 @app.route('/remove_student', methods=['POST'])
 @lock_required
@@ -248,7 +193,6 @@ def remove_student():
     folder_path = f"static/dataset/{name}"
 
     if os.path.exists(folder_path):
-
         os.system(f'rmdir /s /q "{folder_path}"')
 
     os.system("python train.py")
